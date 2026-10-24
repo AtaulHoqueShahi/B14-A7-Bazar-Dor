@@ -1,15 +1,17 @@
 
+
 import Link from "next/link";
+import { Suspense } from "react";
 
 type ApiProduct = {
   id: number;
   slug: string;
   nameBn: string;
-  categoryIcon: string;
+  categoryIcon?: string;
   unit: string;
-  image: string;
+  image?: string;
   today: number;
-  change: {
+  change?: {
     dir: "up" | "down" | "same";
     pct: number;
   };
@@ -41,7 +43,7 @@ async function getTickerProducts(): Promise<ApiProduct[]> {
     try {
       const response = await fetch(
         `${baseUrl.replace(/\/$/, "")}/products`,
-        { cache: "no-store" },
+        { cache: "no-store" }
       );
 
       if (!response.ok) continue;
@@ -59,7 +61,41 @@ async function getTickerProducts(): Promise<ApiProduct[]> {
   return [];
 }
 
-export default async function Navbar() {
+function NavbarFallback() {
+  return (
+    <header className="sticky top-0 z-50 border-b border-emerald-100 bg-white shadow-sm">
+      <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between gap-3">
+          <Link href="/" className="flex items-center gap-2">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-700 text-2xl text-white">
+              🛒
+            </span>
+            <span className="text-xl font-extrabold text-emerald-800 sm:text-2xl">
+              বাজার দর
+            </span>
+          </Link>
+
+          <div className="flex items-center gap-2">
+            <Link
+              href="/sign-in"
+              className="rounded-lg border border-emerald-700 px-3 py-2 text-sm font-semibold text-emerald-800 transition hover:bg-emerald-50 sm:px-4"
+            >
+              সাইন ইন
+            </Link>
+            <Link
+              href="/sign-up"
+              className="rounded-lg bg-emerald-700 px-3 py-2 text-sm font-semibold text-white transition hover:bg-emerald-800 sm:px-4"
+            >
+              সাইন আপ
+            </Link>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+async function NavbarContent() {
   const products = await getTickerProducts();
   const tickerProducts =
     products.length > 0 ? [...products, ...products] : [];
@@ -67,6 +103,7 @@ export default async function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-emerald-100 bg-white shadow-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Logo and authentication links */}
         <div className="flex min-h-[68px] items-center justify-between gap-3">
           <Link href="/" className="flex shrink-0 items-center gap-2">
             <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-700 text-2xl text-white">
@@ -81,23 +118,24 @@ export default async function Navbar() {
           <div className="flex shrink-0 items-center gap-2">
             <Link
               href="/sign-in"
-              className="rounded-lg border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-800 transition hover:bg-emerald-50 sm:px-4 sm:text-sm"
+              className="rounded-lg border border-emerald-700 px-3 py-2 text-sm font-semibold text-emerald-800 transition hover:bg-emerald-50 sm:px-4"
             >
               সাইন ইন
             </Link>
 
             <Link
               href="/sign-up"
-              className="rounded-lg bg-emerald-700 px-3 py-2 text-xs font-semibold text-white transition hover:bg-emerald-800 sm:px-4 sm:text-sm"
+              className="rounded-lg bg-emerald-700 px-3 py-2 text-sm font-semibold text-white transition hover:bg-emerald-800 sm:px-4"
             >
               সাইন আপ
             </Link>
           </div>
         </div>
 
+        {/* Product categories */}
         <nav
           aria-label="পণ্যের ক্যাটাগরি"
-          className="-mx-1 flex gap-1 overflow-x-auto border-t border-emerald-50 py-2"
+          className="flex items-center gap-2 overflow-x-auto border-t border-emerald-50 py-3"
         >
           {categories.map((category) => (
             <Link
@@ -107,7 +145,7 @@ export default async function Navbar() {
                   ? `/category/${category.slug}`
                   : "/#সব-পণ্য"
               }
-              className="flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-emerald-50 hover:text-emerald-800"
+              className="flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-emerald-100 hover:text-emerald-800"
             >
               <span>{category.icon}</span>
               <span>{category.name}</span>
@@ -116,9 +154,10 @@ export default async function Navbar() {
         </nav>
       </div>
 
+      {/* Live market price ticker */}
       <div className="overflow-hidden border-t border-emerald-100 bg-[#edf7ee]">
         <div className="flex min-h-10 items-center">
-          <span className="z-10 shrink-0 bg-emerald-700 px-3 py-2 text-xs font-bold text-white sm:px-4">
+          <span className="z-10 shrink-0 bg-emerald-700 px-4 py-2 text-sm font-bold text-white">
             বাজারদর
           </span>
 
@@ -128,19 +167,18 @@ export default async function Navbar() {
                 <Link
                   key={`${product.id}-${index}`}
                   href={`/product/${product.slug}`}
-                  className="flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2 text-xs sm:text-sm"
+                  className="flex shrink-0 items-center gap-2 px-5 py-2 text-sm"
                 >
                   <span>
                     {product.image || product.categoryIcon || "🛒"}
                   </span>
 
-                  <span className="font-medium text-gray-700">
+                  <span className="font-medium text-gray-800">
                     {product.nameBn}
                   </span>
 
                   <span className="font-bold text-emerald-800">
-                    ৳{product.today}/
-                    {product.unit === "kg" ? "কেজি" : product.unit}
+                    ৳{product.today}/{product.unit === "kg" ? "কেজি" : product.unit}
                   </span>
 
                   {product.change?.dir === "up" ? (
@@ -152,15 +190,15 @@ export default async function Navbar() {
                       ▼ {product.change.pct}%
                     </span>
                   ) : (
-                    <span className="text-gray-500">—</span>
+                    <span className="font-semibold text-gray-500">
+                      — 0%
+                    </span>
                   )}
-
-                  <span className="ml-2 text-emerald-200">|</span>
                 </Link>
               ))}
             </div>
           ) : (
-            <p className="px-4 py-2 text-xs text-gray-500">
+            <p className="px-4 text-sm text-gray-600">
               বর্তমানে বাজারদরের তথ্য পাওয়া যাচ্ছে না।
             </p>
           )}
@@ -181,6 +219,7 @@ export default async function Navbar() {
           from {
             transform: translateX(0);
           }
+
           to {
             transform: translateX(-50%);
           }
@@ -193,5 +232,13 @@ export default async function Navbar() {
         }
       `}</style>
     </header>
+  );
+}
+
+export default function Navbar() {
+  return (
+    <Suspense fallback={<NavbarFallback />}>
+      <NavbarContent />
+    </Suspense>
   );
 }
