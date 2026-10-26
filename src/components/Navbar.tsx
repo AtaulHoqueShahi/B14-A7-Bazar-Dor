@@ -1,3 +1,4 @@
+
 import { Suspense } from "react";
 import NavbarClient from "./NavbarCilient";
 
@@ -20,16 +21,19 @@ export type ApiProduct = {
 const API_URLS = [
   process.env.MAIN_API_URL ||
     "https://openapi.programming-hero.com/api/bazardor",
-  process.env.BASE_URL_1 || "https://api.api-store.workers.dev/api/bazardor",
-  process.env.BASE_URL_2 || "https://api.abcz.workers.dev/api/bazardor",
+  process.env.BASE_URL_1 ||
+    "https://api.api-store.workers.dev/api/bazardor",
+  process.env.BASE_URL_2 ||
+    "https://api.abcz.workers.dev/api/bazardor",
 ];
 
 async function getTickerProducts(): Promise<ApiProduct[]> {
   for (const baseUrl of API_URLS) {
     try {
-      const response = await fetch(`${baseUrl.replace(/\/$/, "")}/products`, {
-        cache: "no-store",
-      });
+      const response = await fetch(
+        `${baseUrl.replace(/\/$/, "")}/products`,
+        { cache: "no-store" },
+      );
 
       if (!response.ok) continue;
 
@@ -73,12 +77,15 @@ function NavbarFallback() {
   );
 }
 
-export default async function Navbar() {
+async function TickerContent() {
   const products = await getTickerProducts();
+  return <NavbarClient products={products} />;
+}
 
+export default function Navbar() {
   return (
     <Suspense fallback={<NavbarFallback />}>
-      <NavbarClient products={products} />
+      <TickerContent />
     </Suspense>
   );
 }

@@ -6,3 +6,40 @@ body {
   background-color: #ffffff;
   color: #171717;
 }
+
+@theme {
+  --animate-ticker: ticker 35s linear infinite;
+}
+
+.ticker-viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  flex-shrink: 0;
+  animation: bazarTicker 25s linear infinite;
+  will-change: transform;
+}
+
+.ticker-group {
+  display: flex;
+  width: max-content;
+  flex-shrink: 0;
+}
+
+.ticker-viewport:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes bazarTicker {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
