@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Menu,
   X,
@@ -34,13 +34,30 @@ export default function NavbarClient({
   products,
 }: NavbarClientProps) {
   const pathname = usePathname();
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
+  const [todayDate, setTodayDate] = useState("");
 
   const { data: session, isPending } = authClient.useSession();
-
   const user = session?.user;
+
+ 
+  useEffect(() => {
+    const updateDate = () => {
+      const formattedDate = new Intl.DateTimeFormat("bn-BD", {
+        timeZone: "Asia/Dhaka",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }).format(new Date());
+
+      setTodayDate(formattedDate);
+    };
+
+    updateDate();
+  }, []);
 
   const handleSignOut = async () => {
     try {
@@ -65,24 +82,29 @@ export default function NavbarClient({
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#e5ebe5] bg-[#fbfdfb]">
-      {/* Main Navbar */}
-      <div className="mx-auto flex min-h-[64px] max-w-[1120px] items-center justify-between gap-3 px-4 sm:px-6">
-        {/* Logo */}
+  
+      <div className="mx-auto flex min-h-[58px] max-w-[1120px] items-center justify-between gap-3 px-4 sm:px-6">
+     
         <Link
           href="/"
-          className="flex shrink-0 items-center gap-2"
+          className="flex shrink-0 flex-col items-start"
           aria-label="বাজার দর হোম"
         >
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#07883e] text-xl text-white">
-            🛒
+          <span className="flex items-center gap-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#07883e] text-base text-white">
+              🛒
+            </span>
+
+            <span className="text-base font-extrabold tracking-tight text-[#26352b]">
+              বাজার দর
+            </span>
           </span>
 
-          <span className="text-lg font-extrabold tracking-tight text-[#26352b] sm:text-xl">
-            বাজার দর
+          <span className="ml-10 mt-0.5 whitespace-nowrap text-[9px] leading-tight text-[#68736a]">
+            {todayDate || "তারিখ লোড হচ্ছে..."}
           </span>
         </Link>
 
-        {/* Desktop Auth Actions */}
         <div className="hidden items-center gap-2 sm:flex">
           {isPending ? (
             <div className="h-9 w-24 animate-pulse rounded-lg bg-gray-100" />
@@ -130,7 +152,9 @@ export default function NavbarClient({
                     className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 disabled:opacity-60"
                   >
                     <LogOut size={16} />
-                    {signingOut ? "লগ আউট হচ্ছে..." : "সাইন আউট"}
+                    {signingOut
+                      ? "লগ আউট হচ্ছে..."
+                      : "সাইন আউট"}
                   </button>
                 </div>
               )}
@@ -154,19 +178,23 @@ export default function NavbarClient({
           )}
         </div>
 
-        {/* Mobile Menu Button */}
+   
         <button
           type="button"
-          onClick={() => setMobileMenuOpen((previous) => !previous)}
-          className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#e5ebe5] text-[#26352b] transition hover:bg-[#edf5ed] sm:hidden"
-          aria-label={mobileMenuOpen ? "মেনু বন্ধ করো" : "মেনু খোলো"}
+          onClick={() =>
+            setMobileMenuOpen((previous) => !previous)
+          }
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#e5ebe5] text-[#26352b] transition hover:bg-[#edf5ed] sm:hidden"
+          aria-label={
+            mobileMenuOpen ? "মেনু বন্ধ করো" : "মেনু খোলো"
+          }
           aria-expanded={mobileMenuOpen}
         >
           {mobileMenuOpen ? <X size={21} /> : <Menu size={21} />}
         </button>
       </div>
 
-      {/* Category Navigation */}
+     
       <nav className="hidden border-t border-[#edf0ed] sm:block">
         <div className="mx-auto flex max-w-[1120px] items-center justify-center gap-1 overflow-x-auto px-4 sm:px-6">
           {categories.map((category) => {
@@ -197,9 +225,13 @@ export default function NavbarClient({
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+   
       {mobileMenuOpen && (
         <div className="border-t border-[#e5ebe5] bg-white px-4 py-3 sm:hidden">
+          <div className="mb-3 border-b border-[#edf0ed] pb-3 text-[10px] text-[#68736a]">
+            {todayDate || "তারিখ লোড হচ্ছে..."}
+          </div>
+
           <nav className="grid grid-cols-2 gap-2">
             {categories.map((category) => {
               const href = category.slug
@@ -255,7 +287,9 @@ export default function NavbarClient({
                   className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-red-600 hover:bg-red-50 disabled:opacity-60"
                 >
                   <LogOut size={16} />
-                  {signingOut ? "লগ আউট হচ্ছে..." : "সাইন আউট"}
+                  {signingOut
+                    ? "লগ আউট হচ্ছে..."
+                    : "সাইন আউট"}
                 </button>
               </div>
             ) : (
@@ -281,7 +315,6 @@ export default function NavbarClient({
         </div>
       )}
 
-      {/* Market Price Ticker */}
       <div className="ticker-viewport w-full border-t border-[#e5ebe5] bg-[#fbfdfb]">
         {products.length > 0 ? (
           <div className="ticker-track">

@@ -1,5 +1,6 @@
-
+import Image from "next/image";
 import Link from "next/link";
+import BazarJuri from "@/asset/bazar-hero.png"
 import {
   ArrowDownRight,
   ArrowRight,
@@ -198,66 +199,56 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-[#f5faf5] text-gray-800">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-        <section className="relative isolate overflow-hidden rounded-2xl border border-emerald-100 bg-[#e7f5e9] px-5 py-8 sm:px-9 sm:py-10 lg:px-12 lg:py-12">
+       <section className="relative flex min-h-[175px] items-center overflow-hidden rounded-2xl border border-[#e5ebe5] bg-[#fbfdfb] px-5 py-6 sm:min-h-[190px] sm:px-8">
           <div className="relative z-10 max-w-xl">
-            {/* Today's Bangla date */}
+          
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/90 px-3 py-2 text-sm font-medium text-emerald-800">
               <span aria-hidden="true">📅</span>
               <BanglaDate />
             </div>
 
-            <div>
-              <span className="inline-flex rounded-full border border-emerald-100 bg-white/80 px-3 py-1.5 text-xs font-semibold text-emerald-800">
-                আপনার নিত্যদিনের বাজার সঙ্গী
-              </span>
-            </div>
+           
 
             <h1 className="mt-4 text-3xl font-extrabold leading-tight tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
-              প্রতিদিনের বাজার দর,
-              <br />
-              এখন এক নজরে
+              আজকের বাজারের দাম এক নজরে
             </h1>
 
             <p className="mt-4 max-w-md text-sm leading-7 text-gray-600 sm:text-base">
-              নিত্যপ্রয়োজনীয় পণ্যের দাম দেখুন, বাজারের পরিবর্তন জানুন এবং
-              সচেতনভাবে বাজার করুন।
+           চাল, ডাল, তেল, সবজি, মাছ, মাংস, চিনি ও মসলার দাম — বাজারজীবিকার ভিত্তিচিত্র, হাট, সর্বনিম্ন-সর্বোচ্চ এবং দামের পরিবর্তন এক জায়গায়
             </p>
 
             <Link
               href="#সব-পণ্য"
               className="mt-6 inline-flex items-center gap-2 rounded-xl bg-emerald-700 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-800"
             >
-              বাজার দর দেখুন
-              <ArrowRight size={17} />
+             সব পণ্য দেখুন
+             
             </Link>
           </div>
 
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -bottom-8 -right-4 text-8xl opacity-20 sm:right-8 sm:text-9xl lg:right-12 lg:text-[180px]"
-          >
-            🧺
-          </div>
+  
 
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute right-8 top-5 text-4xl sm:right-32 sm:top-8 sm:text-5xl"
-          >
-            🥬
-          </div>
+          
 
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute bottom-5 right-24 text-4xl sm:right-52 sm:text-5xl"
-          >
-            🍅
-          </div>
+         <div
+  aria-hidden="true"
+  className="pointer-events-none absolute bottom-3 right-5 hidden sm:block"
+>
+  <Image
+    src={BazarJuri}
+    alt=""
+    width={180}
+    height={150}
+    priority
+    className="h-auto w-[140px] object-contain sm:w-[160px] lg:w-[180px]"
+  />
+</div>
         </section>
 
         <section className="mt-9">
           <SectionHeading
-            title="📈 যেসব পণ্যের দাম বেড়েছে"
-            description="গত দিনের তুলনায় দাম বেড়েছে"
+            title="📈 আজ দাম বেড়েছে"
+           description=""
           />
 
           {risingProducts.length > 0 ? (
@@ -275,8 +266,8 @@ export default async function HomePage() {
 
         <section className="mt-9">
           <SectionHeading
-            title="📉 যেসব পণ্যের দাম কমেছে"
-            description="গত দিনের তুলনায় দাম কমেছে"
+            title="📉 আজ দ দাম কমেছে"
+            description=""
           />
 
           {fallingProducts.length > 0 ? (
