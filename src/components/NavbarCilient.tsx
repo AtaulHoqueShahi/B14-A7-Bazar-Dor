@@ -136,29 +136,59 @@ export default function NavbarClient({
                 <ChevronDown size={15} />
               </button>
 
-              {profileMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-[#e5ebe5] bg-white p-2 shadow-lg">
-                  <Link
-                    href="/profile"
-                    onClick={() => setProfileMenuOpen(false)}
-                    className="block rounded-lg px-3 py-2 text-sm text-[#26352b] hover:bg-[#f0f7f0]"
-                  >
-                    প্রোফাইল
-                  </Link>
+          
+{profileMenuOpen && (
+  <div className="absolute right-0 top-full z-[100] mt-2 w-60 overflow-hidden rounded-xl border border-[#e5ebe5] bg-white shadow-[0_8px_25px_rgba(0,0,0,0.12)]">
 
-                  <button
-                    type="button"
-                    onClick={handleSignOut}
-                    disabled={signingOut}
-                    className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 disabled:opacity-60"
-                  >
-                    <LogOut size={16} />
-                    {signingOut
-                      ? "লগ আউট হচ্ছে..."
-                      : "সাইন আউট"}
-                  </button>
-                </div>
-              )}
+   
+    <div className="flex items-center gap-3 border-b border-gray-100 px-3 py-3">
+      {user.image ? (
+        <img
+          src={user.image}
+          alt=""
+          className="h-9 w-9 shrink-0 rounded-full object-cover"
+        />
+      ) : (
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-700">
+          <UserRound size={20} />
+        </div>
+      )}
+
+      <div className="min-w-0">
+        <p className="truncate text-xs font-semibold text-[#26352b]">
+          {user.name || "ব্যবহারকারী"}
+        </p>
+        <p className="truncate text-[10px] text-gray-500">
+          {user.email}
+        </p>
+      </div>
+    </div>
+
+    {/* Dropdown Links */}
+    <div className="p-2">
+      <Link
+        href="/profile"
+        onClick={() => setProfileMenuOpen(false)}
+        className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs text-[#26352b] transition hover:bg-[#f0f7f0]"
+      >
+        <UserRound size={15} />
+        প্রোফাইল দেখুন
+      </Link>
+
+      <button
+        type="button"
+        onClick={handleSignOut}
+        disabled={signingOut}
+        className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-xs text-red-500 transition hover:bg-red-50 disabled:opacity-60"
+      >
+        <LogOut size={15} />
+        {signingOut ? "লগ আউট হচ্ছে..." : "লগ আউট"}
+      </button>
+    </div>
+  </div>
+)}
+
+          
             </div>
           ) : (
             <>
