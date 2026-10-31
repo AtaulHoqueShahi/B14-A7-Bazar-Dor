@@ -13,8 +13,8 @@ if (!mongoUrl) throw new Error("MONGODB_URL is missing from .env.local");
 if (!secret) throw new Error("BETTER_AUTH_SECRET is missing from .env.local");
 if (!baseURL) throw new Error("BETTER_AUTH_URL is missing from .env.local");
 
-const client = new MongoClient(mongoUrl);
-const db = client.db("assaiment-7");
+const client = new MongoClient(process.env.MONGODB_URL as string);
+const db = client.db("bazar-dor");
 
 export const auth = betterAuth({
   baseURL,
