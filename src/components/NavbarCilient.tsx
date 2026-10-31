@@ -33,6 +33,7 @@ const categories = [
 export default function NavbarClient({
   products,
 }: NavbarClientProps) {
+
   const pathname = usePathname();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -43,7 +44,7 @@ export default function NavbarClient({
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
 
- 
+
   useEffect(() => {
     const updateDate = () => {
       const formattedDate = new Intl.DateTimeFormat("bn-BD", {
@@ -82,9 +83,9 @@ export default function NavbarClient({
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#e5ebe5] bg-[#fbfdfb]">
-  
+
       <div className="mx-auto flex min-h-[58px] max-w-[1120px] items-center justify-between gap-3 px-4 sm:px-6">
-     
+
         <Link
           href="/"
           className="flex shrink-0 flex-col items-start"
@@ -178,7 +179,7 @@ export default function NavbarClient({
           )}
         </div>
 
-   
+
         <button
           type="button"
           onClick={() =>
@@ -194,7 +195,7 @@ export default function NavbarClient({
         </button>
       </div>
 
-     
+
       <nav className="hidden border-t border-[#edf0ed] sm:block">
         <div className="mx-auto flex max-w-[1120px] items-center justify-center gap-1 overflow-x-auto px-4 sm:px-6">
           {categories.map((category) => {
@@ -206,17 +207,16 @@ export default function NavbarClient({
               category.slug === ""
                 ? pathname === "/"
                 : pathname === href ||
-                  pathname.startsWith(`${href}/`);
+                pathname.startsWith(`${href}/`);
 
             return (
               <Link
                 key={category.name}
                 href={href}
-                className={`shrink-0 border-b-2 px-3 py-3 text-sm font-medium transition ${
-                  isActive
+                className={`shrink-0 border-b-2 px-3 py-3 text-sm font-medium transition ${isActive
                     ? "border-[#07883e] text-[#07883e]"
                     : "border-transparent text-[#58645a] hover:border-[#b6d9bf] hover:text-[#07883e]"
-                }`}
+                  }`}
               >
                 {category.name}
               </Link>
@@ -225,7 +225,7 @@ export default function NavbarClient({
         </div>
       </nav>
 
-   
+
       {mobileMenuOpen && (
         <div className="border-t border-[#e5ebe5] bg-white px-4 py-3 sm:hidden">
           <div className="mb-3 border-b border-[#edf0ed] pb-3 text-[10px] text-[#68736a]">
@@ -242,18 +242,17 @@ export default function NavbarClient({
                 category.slug === ""
                   ? pathname === "/"
                   : pathname === href ||
-                    pathname.startsWith(`${href}/`);
+                  pathname.startsWith(`${href}/`);
 
               return (
                 <Link
                   key={category.name}
                   href={href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`rounded-lg px-3 py-2.5 text-sm font-medium transition ${
-                    isActive
+                  className={`rounded-lg px-3 py-2.5 text-sm font-medium transition ${isActive
                       ? "bg-[#eaf6ed] text-[#07883e]"
                       : "text-[#465348] hover:bg-[#f3f7f3]"
-                  }`}
+                    }`}
                 >
                   {category.name}
                 </Link>
