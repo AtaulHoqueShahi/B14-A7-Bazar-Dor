@@ -1,3 +1,4 @@
+
 {
   "name": "assinment-7",
   "version": "0.1.0",
@@ -10,7 +11,6 @@
   },
   "dependencies": {
     "@better-auth/mongo-adapter": "^1.7.12",
-    "@next/swc-win32-x64-msvc": "^16.4.3",
     "better-auth": "^1.7.12",
     "better-sqlite3": "^13.0.3",
     "lucide-react": "^1.61.0",
