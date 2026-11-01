@@ -14,59 +14,49 @@ const githubClientId = process.env.GITHUB_CLIENT_ID;
 const githubClientSecret = process.env.GITHUB_CLIENT_SECRET;
 
 if (!mongoUrl) {
-  throw new Error("MONGODB_URL is missing from .env.local");
+  throw new Error("MONGODB_URL is missing");
 }
 
 if (!secret) {
-  throw new Error("BETTER_AUTH_SECRET is missing from .env.local");
+  throw new Error("BETTER_AUTH_SECRET is missing");
 }
 
 if (!baseURL) {
-  throw new Error("BETTER_AUTH_URL is missing from .env.local");
+  throw new Error("BETTER_AUTH_URL is missing");
 }
 
-console.log(
-  "Google configured:",
-  Boolean(googleClientId && googleClientSecret)
-);
+if (!googleClientId || !googleClientSecret) {
+  throw new Error("Google OAuth credentials are missing");
+}
 
-console.log(
-  "GitHub configured:",
-  Boolean(githubClientId && githubClientSecret)
-);
-
+if (!githubClientId || !githubClientSecret) {
+  throw new Error("GitHub OAuth credentials are missing");
+}
 
 const client = new MongoClient(mongoUrl);
 const db = client.db("bazar-dor");
-
 
 export const auth = betterAuth({
   baseURL,
   secret,
 
-  database: mongodbAdapter(db, { client }),
+  database: mongodbAdapter(db, {
+    client,
+  }),
 
   emailAndPassword: {
     enabled: true,
   },
 
   socialProviders: {
-    ...(googleClientId && googleClientSecret
-      ? {
-          google: {
-            clientId: googleClientId,
-            clientSecret: googleClientSecret,
-          },
-        }
-      : {}),
+    google: {
+      clientId: googleClientId,
+      clientSecret: googleClientSecret,
+    },
 
-    ...(githubClientId && githubClientSecret
-      ? {
-          github: {
-            clientId: githubClientId,
-            clientSecret: githubClientSecret,
-          },
-        }
-      : {}),
+    github: {
+      clientId: githubClientId,
+      clientSecret: githubClientSecret,
+    },
   },
 });
