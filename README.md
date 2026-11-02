@@ -29,22 +29,6 @@ cd B14-A7-Bazar-Dor
 npm install
 ```
 
-`.env.local` ফাইল তৈরি করে নিচের মানগুলো বসাও। Secret বা OAuth credential GitHub-এ commit কোরো না।
-
-```dotenv
-MONGODB_URL=
-BETTER_AUTH_SECRET=
-BETTER_AUTH_URL=http://localhost:3000
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-GITHUB_CLIENT_ID=
-GITHUB_CLIENT_SECRET=
-MAIN_API_URL=https://openapi.programming-hero.com/api/bazardor
-BASE_URL_1=https://api.api-store.workers.dev/api/bazardor
-BASE_URL_2=https://api.abcz.workers.dev/api/bazardor
-NEXT_PUBLIC_MAIN_API_URL=https://openapi.programming-hero.com/api/bazardor
-NEXT_PUBLIC_BASE_URL_1=https://api.api-store.workers.dev/api/bazardor
-NEXT_PUBLIC_BASE_URL_2=https://api.abcz.workers.dev/api/bazardor
 ```
 
 তারপর development server চালাও:
@@ -53,9 +37,7 @@ NEXT_PUBLIC_BASE_URL_2=https://api.abcz.workers.dev/api/bazardor
 npm run dev
 ```
 
-ব্রাউজারে `http://localhost:3000` খোলো। Deploy করার সময় একই server-side variables Vercel-এর Project Settings → Environment Variables-এ যোগ করতে হবে।
 
-## OAuth callback URLs
 
 Google ও GitHub OAuth settings-এ callback URL হিসেবে যোগ করো:
 
