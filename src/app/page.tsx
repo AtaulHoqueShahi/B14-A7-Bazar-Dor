@@ -146,7 +146,7 @@ function ProductCard({ product }: { product: Product }) {
       <div className="mt-auto flex items-end justify-between gap-2 pt-4">
         <div>
           <p className="text-lg font-extrabold text-emerald-800">
-            ৳{product.today.toLocaleString("en-US")}
+            ৳{product.today.toLocaleString("bn-BD")}
           </p>
 
           <p className="mt-1 text-xs text-gray-500">

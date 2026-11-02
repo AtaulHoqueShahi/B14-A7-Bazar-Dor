@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 
 type Product = {
   id?: number | string;
@@ -191,10 +192,6 @@ export default function CategoryPageClient({ slug }: Props) {
       items.sort((a, b) => getPrice(a.today) - getPrice(b.today));
     } else if (sort === "high") {
       items.sort((a, b) => getPrice(b.today) - getPrice(a.today));
-    } else if (sort === "name") {
-      items.sort((a, b) =>
-        getProductName(a).localeCompare(getProductName(b), "bn"),
-      );
     }
 
     return items;
@@ -246,7 +243,6 @@ export default function CategoryPageClient({ slug }: Props) {
               <option value="default">ডিফল্ট</option>
               <option value="low">দাম: কম থেকে বেশি</option>
               <option value="high">দাম: বেশি থেকে কম</option>
-              <option value="name">নাম অনুযায়ী</option>
             </select>
           </div>
         </section>
@@ -280,6 +276,9 @@ export default function CategoryPageClient({ slug }: Props) {
             <p className="mt-2 text-sm text-[#68736a]">
               এই ক্যাটাগরিতে কোনো পণ্য পাওয়া যায়নি।
             </p>
+            <Link href="/" className="mt-4 inline-flex rounded-lg bg-[#07883e] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#066e33]">
+              হোম পেজে ফিরে যান
+            </Link>
           </div>
         )}
 

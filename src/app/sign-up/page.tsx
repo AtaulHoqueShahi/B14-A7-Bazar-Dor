@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { toast } from "react-hot-toast";
 import Link from "next/link";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { authClient } from "@/lib/auth-cilent";
@@ -22,6 +23,7 @@ export default function SignUpPage() {
 
     if (password !== confirmPassword) {
       setError("দুটি পাসওয়ার্ড মিলছে না।");
+      toast.error("দুটি পাসওয়ার্ড মিলছে না।");
       return;
     }
 
@@ -35,13 +37,17 @@ export default function SignUpPage() {
       });
 
       if (result.error) {
-        setError(result.error.message || "অ্যাকাউন্ট তৈরি করা যায়নি।");
+        const message = result.error.message || "অ্যাকাউন্ট তৈরি করা যায়নি।";
+        setError(message);
+        toast.error(message);
         return;
       }
 
-      window.location.assign("/");
+      window.location.assign("/sign-in?auth=signup");
     } catch {
-      setError("অ্যাকাউন্ট তৈরি করা যায়নি। আবার চেষ্টা কর।");
+      const message = "অ্যাকাউন্ট তৈরি করা যায়নি। আবার চেষ্টা কর।";
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -54,15 +60,19 @@ export default function SignUpPage() {
     try {
       const result = await authClient.signIn.social({
         provider,
-        callbackURL: "/",
+        callbackURL: "/?auth=login",
       });
 
       if (result.error) {
-        setError(result.error.message || "সোশ্যাল লগইন করা যায়নি।");
+        const message = result.error.message || "সোশ্যাল লগইন করা যায়নি।";
+        setError(message);
+        toast.error(message);
         setLoading(false);
       }
     } catch {
-      setError("সোশ্যাল লগইন করা যায়নি। আবার চেষ্টা কর।");
+      const message = "সোশ্যাল লগইন করা যায়নি। আবার চেষ্টা কর।";
+      setError(message);
+      toast.error(message);
       setLoading(false);
     }
   }

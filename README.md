@@ -1,184 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# বাজার দর (BazarDor)
 
-## Getting Started
+বাংলাদেশের নিত্যপ্রয়োজনীয় পণ্যের বাজারদর, দাম পরিবর্তন এবং বাজারভিত্তিক দামের তথ্য এক জায়গায় দেখার responsive web app.
 
-First, run the development server:
+## লিংক
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Live site:** https://b14-a7-bazar-dor-g5fr.vercel.app/
+- **GitHub:** https://github.com/AtaulHoqueShahi/B14-A7-Bazar-Dor
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## প্রধান ফিচার
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. API থেকে পণ্যের বর্তমান দাম ও আগের দিনের পরিবর্তন দেখা।
+2. দাম বাড়া/কমা পণ্য, সব পণ্যের তালিকা এবং scrolling price ticker।
+3. ক্যাটাগরি অনুযায়ী পণ্য দেখা এবং বাংলা সংখ্যা সমর্থিত দাম sorting।
+4. পণ্যের সর্বনিম্ন, সর্বোচ্চ, গড় ও বাজারভিত্তিক দাম দেখা।
+5. Better Auth দিয়ে email/password, Google ও GitHub sign-in।
+6. Login-protected product details এবং profile name update।
+7. Mobile, tablet ও desktop-এর জন্য responsive layout।
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## প্রযুক্তি
 
-## Learn More
+Next.js App Router, React, TypeScript, Tailwind CSS, DaisyUI, Better Auth, MongoDB, react-hot-toast, Lucide React।
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-
- 
-# 🛒 BazarDor – বাজার দর
-
-BazarDor is a responsive web application that helps users explore daily market prices of essential products in Bangladesh. Users can browse products by category, check current prices, compare price changes, and manage their accounts.
-
-## 🌐 Live Demo
-
-- **Live Website:** [Add your deployed website URL]
-- **GitHub Repository:** [Add your GitHub repository URL]
-
-## ✨ Features
-
-- Browse daily market prices of essential products.
-- Explore products by categories.
-- View product details and price information.
-- Check price changes compared to previous prices.
-- User registration and login system.
-- Google and GitHub social authentication.
-- User profile and profile update functionality.
-- Responsive design for mobile, tablet, and desktop.
-- Custom loading and 404 pages.
-- Dynamic product data fetched from API.
-
-## 🛠️ Technologies Used
-
-- Next.js
-- React
-- TypeScript
-- Tailwind CSS
-- DaisyUI
-- Better Auth
-- MongoDB
-- Lucide React
-- REST API
-
-## 📦 Dependencies
-
-Main packages used in this project:
-
-- `next`
-- `react`
-- `react-dom`
-- `typescript`
-- `tailwindcss`
-- `daisyui`
-- `better-auth`
-- `mongodb`
-- `lucide-react`
-- `react-hot-toast`
-
-## ⚙️ Installation and Setup
-
-Follow these steps to run the project locally.
-
-### 1. Clone the Repository
+## লোকালি চালানো
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
-```
-
-### 2. Navigate to the Project Folder
-
-```bash
-cd assinment-7
-```
-
-### 3. Install Dependencies
-
-```bash
+git clone https://github.com/AtaulHoqueShahi/B14-A7-Bazar-Dor.git
+cd B14-A7-Bazar-Dor
 npm install
 ```
 
-### 4. Configure Environment Variables
+`.env.local` ফাইল তৈরি করে নিচের মানগুলো বসাও। Secret বা OAuth credential GitHub-এ commit কোরো না।
 
+```dotenv
+MONGODB_URL=
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=http://localhost:3000
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+MAIN_API_URL=https://openapi.programming-hero.com/api/bazardor
+BASE_URL_1=https://api.api-store.workers.dev/api/bazardor
+BASE_URL_2=https://api.abcz.workers.dev/api/bazardor
+NEXT_PUBLIC_MAIN_API_URL=https://openapi.programming-hero.com/api/bazardor
+NEXT_PUBLIC_BASE_URL_1=https://api.api-store.workers.dev/api/bazardor
+NEXT_PUBLIC_BASE_URL_2=https://api.abcz.workers.dev/api/bazardor
 ```
 
-**Important:** Replace the placeholder values with your own credentials. Never commit `.env.local` or expose your secrets publicly.
-
-### 5. Run the Development Server
+তারপর development server চালাও:
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+ব্রাউজারে `http://localhost:3000` খোলো। Deploy করার সময় একই server-side variables Vercel-এর Project Settings → Environment Variables-এ যোগ করতে হবে।
 
-## 🔐 Authentication
+## OAuth callback URLs
 
-BazarDor uses Better Auth for authentication.
+Google ও GitHub OAuth settings-এ callback URL হিসেবে যোগ করো:
 
-- Email and password registration.
-- Email and password login.
-- Google sign-in.
-- GitHub sign-in.
-- User session management.
-- Profile information update.
-- Sign out functionality.
+- Local: `http://localhost:3000/api/auth/callback/google` এবং `http://localhost:3000/api/auth/callback/github`
+- Production: `https://b14-a7-bazar-dor-g5fr.vercel.app/api/auth/callback/google` এবং `https://b14-a7-bazar-dor-g5fr.vercel.app/api/auth/callback/github`
 
-Social login requires valid OAuth credentials.
+## API
 
-## 📁 Project Structure
+পণ্যের data BazarDor API থেকে আসে: `https://openapi.programming-hero.com/api/bazardor`। বিকল্প API endpoint-গুলো environment variables দিয়ে configure করা যায়।
 
-```text
-src/
-├── app/
-│   ├── api/
-│   │   └── auth/
-│   │       └── [...all]/
-│   │           └── route.ts
-│   ├── category/
-│   ├── product/
-│   ├── sign-in/
-│   ├── sign-up/
-│   ├── profile/
-│   ├── not-found.tsx
-│   ├── loading.tsx
-│   ├── layout.tsx
-│   └── page.tsx
-├── components/
-├── lib/
-│   ├── auth.ts
-│   ├── auth-cilent.ts
-│   └── utils.ts
-└── proxy.ts
-```
+## লেখক
 
-## 📡 API
-
-Product and category information is retrieved from the BazarDor API.
-
-**Main API:**
-
-```text
-https://openapi.programming-hero.com/api/bazardor
-```
-
-Backup API endpoints are configured through environment variables.
-
-## 👨‍💻 Author
-
-**Ataul Hoque Shahi**
-
-- GitHub: [AtaulHoqueShahi](https://github.com/AtaulHoqueShahi)
-
-
----
+Ataul Hoque Shahi — [GitHub](https://github.com/AtaulHoqueShahi)

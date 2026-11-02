@@ -1,6 +1,8 @@
 
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
 import { Suspense } from "react";
 
 type MarketPrice = {
@@ -268,6 +270,13 @@ async function ProductDetailsContent({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const session = await auth.api.getSession({ headers: await headers() });
+
+  if (!session) {
+    const returnTo = `/product/${encodeURIComponent(slug)}`;
+    redirect(`/sign-in?required=1&redirectTo=${encodeURIComponent(returnTo)}`);
+  }
+
   const product = await getProduct(slug);
 
   if (!product) notFound();

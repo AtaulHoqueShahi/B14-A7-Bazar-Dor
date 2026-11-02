@@ -12,6 +12,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-cilent";
+import { toast } from "react-hot-toast";
 import type { ApiProduct } from "./Navbar";
 
 type NavbarClientProps = {
@@ -65,9 +66,9 @@ export default function NavbarClient({
       setSigningOut(true);
       await authClient.signOut();
       setProfileMenuOpen(false);
-      window.location.href = "/";
-    } catch (error) {
-      console.error("Sign out failed:", error);
+      window.location.assign("/?auth=logout");
+    } catch {
+      toast.error("লগ আউট করা যায়নি। আবার চেষ্টা করো।");
     } finally {
       setSigningOut(false);
     }

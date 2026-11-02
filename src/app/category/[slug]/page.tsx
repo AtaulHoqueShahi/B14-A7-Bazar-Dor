@@ -2,7 +2,12 @@
 
 
 import { Suspense } from "react";
+import { notFound } from "next/navigation";
 import CategoryPageClient from "./CategoryPageClient";
+
+const VALID_CATEGORY_SLUGS = new Set([
+  "chal", "dal", "tel", "sobji", "mach", "mangsho", "dim-dudh", "moshla",
+]);
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -10,8 +15,11 @@ type PageProps = {
 
 async function CategoryContent({ params }: PageProps) {
   const { slug } = await params;
+  const normalizedSlug = decodeURIComponent(slug).toLowerCase();
 
-  return <CategoryPageClient slug={slug} />;
+  if (!VALID_CATEGORY_SLUGS.has(normalizedSlug)) notFound();
+
+  return <CategoryPageClient slug={normalizedSlug} />;
 }
 
 export default function CategoryPage({ params }: PageProps) {

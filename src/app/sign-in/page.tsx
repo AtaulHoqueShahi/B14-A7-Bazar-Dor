@@ -2,9 +2,26 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { toast } from "react-hot-toast";
 import Link from "next/link";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { authClient } from "@/lib/auth-cilent";
+
+function getReturnPath() {
+  const target = new URLSearchParams(window.location.search).get("redirectTo");
+  if (!target?.startsWith("/") || target.startsWith("//")) return "/";
+
+  const destination = new URL(target, window.location.origin);
+  return destination.origin === window.location.origin
+    ? `${destination.pathname}${destination.search}${destination.hash}`
+    : "/";
+}
+
+function addAuthStatus(path: string, status: string) {
+  const destination = new URL(path, window.location.origin);
+  destination.searchParams.set("auth", status);
+  return `${destination.pathname}${destination.search}${destination.hash}`;
+}
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
@@ -22,13 +39,17 @@ export default function SignInPage() {
       const result = await authClient.signIn.email({ email, password });
 
       if (result.error) {
-        setError(result.error.message || "সাইন ইন করা যায়নি।");
+        const message = result.error.message || "সাইন ইন করা যায়নি।";
+        setError(message);
+        toast.error(message);
         return;
       }
 
-      window.location.assign("/");
+      window.location.assign(addAuthStatus(getReturnPath(), "login"));
     } catch {
-      setError("সাইন ইন করা যায়নি। আবার চেষ্টা কর।");
+      const message = "সাইন ইন করা যায়নি। আবার চেষ্টা কর।";
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -41,15 +62,19 @@ export default function SignInPage() {
     try {
       const result = await authClient.signIn.social({
         provider,
-        callbackURL: "/",
+        callbackURL: addAuthStatus(getReturnPath(), "login"),
       });
 
       if (result.error) {
-        setError(result.error.message || "সোশ্যাল লগইন করা যায়নি।");
+        const message = result.error.message || "সোশ্যাল লগইন করা যায়নি।";
+        setError(message);
+        toast.error(message);
         setLoading(false);
       }
     } catch {
-      setError("সোশ্যাল লগইন করা যায়নি। আবার চেষ্টা কর।");
+      const message = "সোশ্যাল লগইন করা যায়নি। আবার চেষ্টা কর।";
+      setError(message);
+      toast.error(message);
       setLoading(false);
     }
   }
@@ -124,15 +149,6 @@ export default function SignInPage() {
                   {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
                 </button>
               </div>
-            </div>
-
-            <div className="flex justify-end">
-              <Link
-                href="/forgot-password"
-                className="text-xs font-medium text-emerald-700 hover:underline"
-              >
-                পাসওয়ার্ড ভুলে গেছ?
-              </Link>
             </div>
 
             <button
