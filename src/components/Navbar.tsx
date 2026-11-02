@@ -52,8 +52,9 @@ async function getTickerProducts(): Promise<ApiProduct[]> {
       ) {
         return payload.data as ApiProduct[];
       }
-    } catch (error) {
-      console.error("Ticker API error:", error);
+    } catch {
+      // API failures are expected when a provider is unavailable or prerendering ends.
+      // Try the next provider without logging routine fallback behavior.
     }
   }
 

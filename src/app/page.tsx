@@ -92,8 +92,8 @@ async function getProducts(): Promise<Product[]> {
         changePercent: item.change?.pct ?? 0,
         markets: item.markets || [],
       }));
-    } catch (error) {
-      console.error(`Failed to fetch ${baseUrl}`, error);
+    } catch {
+      // Try the next API provider when this one is unavailable or prerendering ends.
     }
   }
 
@@ -266,7 +266,7 @@ export default async function HomePage() {
 
         <section className="mt-9">
           <SectionHeading
-            title="📉 আজ দ দাম কমেছে"
+            title="📉 আজ দাম কমেছে"
             description=""
           />
 
@@ -321,7 +321,7 @@ export default async function HomePage() {
               </h3>
 
               <p className="mt-2 text-sm leading-6 text-gray-500">
-                ইন্টারনেট সংযোগ অথবা API response পরীক্ষা কর।
+                ইন্টারনেট সংযোগ  পরীক্ষা কর।
               </p>
 
               <a
@@ -330,7 +330,7 @@ export default async function HomePage() {
                 rel="noreferrer"
                 className="mt-5 inline-flex items-center gap-2 rounded-xl bg-emerald-700 px-4 py-3 text-sm font-bold text-white transition hover:bg-emerald-800"
               >
-                API পরীক্ষা কর
+               
                 <ArrowRight size={16} />
               </a>
             </div>
