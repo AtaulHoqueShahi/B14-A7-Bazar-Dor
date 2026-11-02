@@ -278,7 +278,7 @@ export default async function HomePage() {
             </div>
           ) : (
             <p className="rounded-xl border border-emerald-100 bg-white p-5 text-sm text-gray-500">
-              দাম কমার পণ্য পাওয়া যায়নি।
+              দাম কমার পণ্য পাওয়া যায়নি
             </p>
           )}
         </section>
@@ -287,7 +287,7 @@ export default async function HomePage() {
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
             <div>
               <h2 className="text-xl font-extrabold text-gray-900 sm:text-2xl">
-                🛒 সকল পণ্যের বাজার দর
+                🛒 সকল পণ্যের বাজার দর   
               </h2>
 
               <p className="mt-1 text-sm text-gray-500">
