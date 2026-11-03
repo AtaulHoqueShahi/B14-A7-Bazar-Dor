@@ -39,6 +39,12 @@ export const auth = betterAuth({
   baseURL,
   secret,
 
+  // Allowed frontend origins
+  trustedOrigins: [
+    "https://bazar-dor.vercel.app",
+    "http://localhost:3000",
+  ],
+
   database: mongodbAdapter(db, {
     client,
   }),
