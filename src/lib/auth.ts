@@ -24,13 +24,15 @@ if (!baseURL) {
   throw new Error("BETTER_AUTH_URL is missing");
 }
 
-if (!googleClientId || !googleClientSecret) {
-  throw new Error("Google OAuth credentials are missing");
-}
-
-if (!githubClientId || !githubClientSecret) {
-  throw new Error("GitHub OAuth credentials are missing");
-}
+const trustedOrigins = [
+  baseURL,
+  "https://b14-a7-bazar-dor-mc5w-7qb6g2p9l-ahshahi84-9420.vercel.app",
+  "https://bazar-dor.vercel.app",
+  "http://localhost:3000",
+  ...(process.env.BETTER_AUTH_TRUSTED_ORIGINS?.split(",") ?? []),
+]
+  .filter(Boolean)
+  .map((origin) => new URL(origin).origin);
 
 const client = new MongoClient(mongoUrl);
 const db = client.db("bazar-dor");
@@ -39,11 +41,7 @@ export const auth = betterAuth({
   baseURL,
   secret,
 
-  // Allowed frontend origins
-  trustedOrigins: [
-    "https://bazar-dor.vercel.app",
-    "http://localhost:3000",
-  ],
+  trustedOrigins: [...new Set(trustedOrigins)],
 
   database: mongodbAdapter(db, {
     client,
@@ -55,14 +53,22 @@ export const auth = betterAuth({
   },
 
   socialProviders: {
-    google: {
-      clientId: googleClientId,
-      clientSecret: googleClientSecret,
-    },
+    ...(googleClientId && googleClientSecret
+      ? {
+          google: {
+            clientId: googleClientId,
+            clientSecret: googleClientSecret,
+          },
+        }
+      : {}),
 
-    github: {
-      clientId: githubClientId,
-      clientSecret: githubClientSecret,
-    },
+    ...(githubClientId && githubClientSecret
+      ? {
+          github: {
+            clientId: githubClientId,
+            clientSecret: githubClientSecret,
+          },
+        }
+      : {}),
   },
 });

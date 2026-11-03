@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
+import { connection } from "next/server";
 import NavbarClient from "./NavbarCilient";
 
 export type ApiProduct = {
@@ -79,6 +80,7 @@ function NavbarFallback() {
 }
 
 async function TickerContent() {
+  await connection();
   const products = await getTickerProducts();
   return <NavbarClient products={products} />;
 }
