@@ -43,7 +43,7 @@ export default function SignUpPage() {
         return;
       }
 
-      window.location.assign("/sign-in?auth=signup");
+      window.location.assign("/?auth=login");
     } catch {
       const message = "অ্যাকাউন্ট তৈরি করা যায়নি। আবার চেষ্টা কর।";
       setError(message);
